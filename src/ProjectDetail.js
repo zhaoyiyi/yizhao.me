@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
-const ProjectDetail = () => {
+const ProjectDetail = ({markdown}) => {
   return (
-      <ReactMarkdown source={'# test'} />
+      <ReactMarkdown source={markdown} />
   )
 };
 
