@@ -10,24 +10,31 @@ class Projects extends Component {
   }
 
   state = {
+    currentProject: '',
     projectDetail: ''
   };
 
-  componentWillUpdate(nextProps) {
-    console.log(nextProps);
-  }
 
-  fetchDetail = async (githubLink) => {
-    const readmeLink = githubLink.replace('github.com', 'raw.githubusercontent.com');
-    const response = await axios.get(`${readmeLink}/master/README.md`);
-    this.setState({projectDetail: response.data})
+  fetchDetail(projectName) {
+    console.log('gh link', projectName);
+    // TODO: figure out a way to get project details from projects obj.
+    if (this.state.currentProject !== projectName) {
+      // const rawLink = githubLink.replace('github.com', 'raw.githubusercontent.com');
+      // axios.get(`${rawLink}/master/README.md`)
+      axios.get(`https://raw.githubusercontent.com/zhaoyiyi/draw-something/master/README.md`)
+          .then(response => this.setState({
+            projectDetail: response.data,
+            currentProject: projectName
+          }));
+    }
   };
 
   render() {
     const projectName = this.props.params.name;
 
     if (projectName) {
-      // this.fetchDetail('https://github.com/zhaoyiyi/draw-something');
+      // If showing a new project detail page, fetch data and set state
+      if (this.state.currentProject !== projectName) this.fetchDetail(projectName);
       return <ProjectDetail markdown={this.state.projectDetail}/>;
     } else {
       return (
